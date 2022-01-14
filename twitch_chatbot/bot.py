@@ -18,7 +18,7 @@ async def test(ctx):
 @bot.command(name='rand')
 async def test(ctx):
     n = random.randint(1,6)
-    await ctx.send(n)
+    await ctx.send(str(n))
 
 if __name__ == "__main__":
     bot.run()
