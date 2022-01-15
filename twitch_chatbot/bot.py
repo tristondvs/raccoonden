@@ -18,7 +18,7 @@ async def test(ctx):
 @bot.command(name='rand')
 async def test(ctx):
     n = random.randint(1,6)
-    await ctx.send(str(n))
+    await ctx.send("/me rolls a fuzzy die, and it landed on a " + str(n))
 
 @bot.command(name='rps')
 async def test(ctx, arg='none'):
