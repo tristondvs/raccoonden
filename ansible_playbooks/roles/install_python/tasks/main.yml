@@ -22,24 +22,24 @@
          - libpcap-devel
          - xz-devel
          - expat-devel
-   - name: download python via wget
+   - name: download python
      get_url: 
-       url: http://python.org/ftp/python/3.7.2/Python-3.7.2.tar.xz
-       dest: /usr/src/
-   - name: unarchive python
+       url: '{{ python_url }}'
+       dest: '{{ python_dest }}'
+   - name: unarchive python on remote host
      unarchive:
-       src: /usr/src/Python-3.7.2.tar.xz
-       dest: /usr/src
+       src: '{{ python_dest }}/Python-3.7.2.tar.xz'
+       dest: '{{ python_dest }}'
        remote_src: yes
    - name: copy install script
      copy:
        src: scripts/install.sh
-       dest: /usr/src/
+       dest: '{{ python_dest }}'
        owner: root
        group: root
        mode: 0755
    - name: install python
-     shell: /usr/src/install.sh
+     shell: '{{ python_dest }}/install.sh'
      args:
        creates: /etc/python_installed
 
