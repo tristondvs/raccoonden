@@ -1,0 +1,46 @@
+---
+ - name: ensure python is installed and ready for use
+   tags: install
+   block:
+   - name: install dev tools
+     ansible.builtin.yum:
+       name: "@Development tools"
+       state: present
+   - name: install additional packages
+     ansible.builtin.yum:
+       name:
+         - libffi-devel
+         - zlib-devel
+         - bzip2-devel
+         - openssl-devel
+         - ncurses-devel
+         - sqlite-devel
+         - readline-devel
+         - tk-devel
+         - gdbm-devel
+         - db4-devel
+         - libpcap-devel
+         - xz-devel
+         - expat-devel
+   - name: download python via wget
+     get_url: 
+       url: http://python.org/ftp/python/3.7.2/Python-3.7.2.tar.xz
+       dest: /usr/src/
+   - name: unarchive python
+     unarchive:
+       src: /usr/src/Python-3.7.2.tar.xz
+       dest: /usr/src
+       remote_src: yes
+   - name: copy install script
+     copy:
+       src: scripts/install.sh
+       dest: /usr/src/
+       owner: root
+       group: root
+       mode: 0755
+   - name: install python
+     shell: /usr/src/install.sh
+     args:
+       creates: /etc/python_installed
+
+...
