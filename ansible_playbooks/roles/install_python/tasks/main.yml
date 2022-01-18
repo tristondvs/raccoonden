@@ -42,5 +42,4 @@
      shell: '{{ python_dest }}/install.sh'
      args:
        creates: /etc/python_installed
-
 ...
