@@ -1,5 +1,6 @@
 import os
 import random
+import asyncio
 from twitchio.ext import commands
 
 # set up the bot
@@ -11,9 +12,14 @@ bot = commands.Bot(
     initial_channels=[os.environ['CHANNEL']]
 )
 
+#@bot.command(name='shoutc')
+#async def test(ctx, arg=''):
+#    clips_list = twitchio.Clip()
+#    await ctx.send(f'Sure thing {ctx.author.name}, check out these clips from @{arg}')
+
 @bot.command(name='test')
 async def test(ctx):
-    await ctx.send('test passed!')
+    await ctx.send('I\'m here Jeezy mormon2L')
 
 @bot.command(name='rand')
 async def test(ctx):
