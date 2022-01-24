@@ -1,0 +1,25 @@
+---
+ - name: install docker prereqs
+   yum:
+     name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+     state: present'
+ - name: install docker repo
+   shell: "sudo yum-config-manager --add-repo {{ docker_url }}"
+ - name: install docker
+   yum:
+     name: docker-ce
+     state: present
+ - name: enable docker
+   systemd:
+     name: docker
+     state: enabled
+ - name: start docker
+   systemd:
+     name: docker
+     state: started
+ - name: add user to docker group (must pass var in execution)
+   shell: "sudo usermod -aG docker {{ ansible_user }}"
+...
