@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
 from db import Database
-#import matplotlib
-#from matplotlib import pyplot as plot
-#matplotlib.use('Agg')
-#import numpy as num
+import matplotlib
+from matplotlib import pyplot as plot
+import numpy as num
 
 db = Database('games.db')
 
@@ -103,8 +102,6 @@ populate_list()
 
 
 ## TODOS:
-# Prepare a UI that will allow users to input games, and click the 'Add' Button.
-# - We can also remove them from the list
 # Take the list of games and make them into a pie chart with equal values, so it looks similar to a wheel of choices
 # - We can give them an equal value by doing something like value = len(games_list) / 100
 # Find a way to make the wheel spin and lands on a choice
