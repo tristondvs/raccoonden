@@ -8,7 +8,7 @@ class Database:
         self.conn.commit()
 
     def fetch(self):
-        self.cur.execute("SELECT * FROM games")
+        self.cur.execute("SELECT * FROM games ORDER BY id asc")
         rows = self.cur.fetchall()
         return rows
 
@@ -21,15 +21,11 @@ class Database:
         self.conn.commit()
 
     def clear_list(self):
-        self.cur.execute("DELETE FROM games")
+        self.cur.execute("DELETE FROM games;")
         self.conn.commit()
 
     def __del__(self):
         self.conn.close()
 
-#db = Database('games.db')
-#db.insert("Heroes of Hammerwatch")
-#db.insert("Hades")
-#db.insert("Beacon")
-#db.insert("Vampire Survivors")
+
 #db.clear_list()
