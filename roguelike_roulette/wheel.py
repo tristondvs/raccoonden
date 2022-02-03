@@ -1,46 +1,95 @@
 from tkinter import *
+from tkinter import messagebox
+from db import Database
 #import matplotlib
 #from matplotlib import pyplot as plot
 #matplotlib.use('Agg')
 #import numpy as num
 
+db = Database('games.db')
+
+# Imports list of games from games.db
 def populate_list():
-    print('Populate')
+    games_list.delete(0, END)
+    for row in db.fetch():
+        try:
+            games_list.insert(END, row)
+        except IndexError:
+            print('Games database is completely empty!')
+        else:
+            print('Refreshing list of games within games.db...')
 
 def add_game():
-    print('Added Game')
+    if game_name.get() == '':
+        messagebox.showerror('Required Fields', 'Please enter a game name within the Enter Game Name field.')
+        return
+    db.insert(game_name.get())
+    games_list.delete(0, END)
+    games_list.insert(END, (game_name.get()))
+    populate_list()
+    print('Added Game: ' + (game_name.get()))
+    games_entry.delete(0, END)
+
+def select_game(event):
+    global game_choice
+    try:
+        index_of_games = games_list.curselection()[0]
+        game_choice = games_list.get(index_of_games)
+    except IndexError:
+        print('Games database is completely empty, no selection made!')
+    else:
+        games_entry.delete(0, END)
+
 
 def remove_game():
-    print('Removed Game')
+    #global game_choice
+    games_list.delete(0, END)
+    print('Removing Game: ' + str(game_choice[1]))
+    db.remove(game_choice[0])
+    populate_list()
+
+
+def clear_games():
+    messagebox.askquestion('Clear All Games', 'Are you sure you want to clear all games from the list?', icon='warning')
+    if messagebox == 'yes':
+        games_list.delete(0, END)
+        db.clear_list()
+        print('Cleared all games from list')
 
 # create window object
 app = Tk()
-
 # Add games to list
 game_name = StringVar()
-games_label = Label(app, text='Enter Game Name', font=('bold', 14), pady=5, padx=20)
+games_label = Label(app, text='Enter Game Name', font=('bold', 14), pady=10, padx=5)
 games_label.grid(row=0, column=0, sticky=W)
 games_entry = Entry(app, textvariable=game_name)
 games_entry.grid(row=0, column=1)
 #Show a list of games
-games_list = Listbox(app, height=15, width=40, border=1)
-games_list.grid(row=1, column=0, columnspan=1, rowspan=1, padx=20, pady=10)
+games_list = Listbox(app, height=8, width=65, border=1)
+games_list.grid(row=2, column=0, columnspan=3, rowspan=1, padx=10, pady=10, sticky=W)
 # Adding a scroll bar
-#scrollbar = Scrollbar(app)
-#scrollbar.grid(row=1, column=0)
+scrollbar = Scrollbar(app)
+scrollbar.grid(row=2, column=4)
 # Bind the scrollbar to the list of games
-#games_list.configure(yscrollcommand=scrollbar.set)
-#scrollbar.configure(command=games_list.yview)
+games_list.configure(yscrollcommand=scrollbar.set)
+scrollbar.configure(command=games_list.yview)
+# Bind select
+games_list.bind('<<ListboxSelect>>', select_game)
 
 # Adding buttons
 add_button = Button(app, text='Add Game', width=12, command=add_game)
-add_button.grid(row=0, column=2, padx=10)
-#remove_button = Button(app, text='Remove Game', width=12, command=remove_game)
-#add_button.grid(row=4, column=4, pady=20)
+add_button.grid(row=0, column=3, padx=10)
+remove_button = Button(app, text='Remove Game', width=12, command=remove_game)
+remove_button.grid(row=4, column=0, padx=10, pady=10)
+clear_button = Button(app, text='Clear List', width=12, command=clear_games)
+clear_button.grid(row=4, column=1, padx=10, pady=10)
 
 app.title('Roguelike Roulette Spinwheel')
 #Adjust the size of the window when the app opens
-app.geometry('600x600')
+app.geometry('600x250')
+
+# Populate list of games
+populate_list()
 
 
 

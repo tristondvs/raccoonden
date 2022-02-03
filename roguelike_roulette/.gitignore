@@ -1,2 +1,7 @@
 .idea
 dp.py
+__pychache__
+build
+dist
+games.db
+wheel.spec
