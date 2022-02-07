@@ -107,10 +107,12 @@ app.geometry('600x200')
 populate_list()
 
 ## TODOS:
-# Take the list of games and make them into a pie chart with equal values, so it looks similar to a wheel of choices
-# - We can give them an equal value by doing something like value = len(games_list) / 100
 # Find a way to make the wheel spin and lands on a choice
+#   - See if we can add the game names within the pie slices; or hide them until a choice is made
 # Find a way to determine the string within the object
+# Should I worry about creating the pie chart on screen before the wheel is spun? Or should I focus on hosting the 
+# piechart on a webpage so it can be used as a browser source via OBS?
+# Integrate twitchio to change game name based on selection?
 
 # Start program
 app.mainloop()
