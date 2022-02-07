@@ -1,22 +1,35 @@
 from tkinter import *
 from tkinter import messagebox
 from db import Database
-import matplotlib
-from matplotlib import pyplot as plot
-import numpy as num
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 db = Database('games.db')
+
+# lole
+def bake_pie():
+    plt.figure(figsize=(3,3))
+    labels = db.fetch()
+    values = []
+    i = 0
+    while i <= len(labels):
+        values.append(len(labels)/100)
+        i += 1
+    game_wheel = plt.pie(values, labels=labels)
+    return game_wheel
 
 # Imports list of games from games.db
 def populate_list():
     games_list.delete(0, END)
     for row in db.fetch():
-        try:
-            games_list.insert(END, row)
-        except IndexError:
+        if games_list == []:
             print('Games database is completely empty!')
         else:
             print('Refreshing list of games within games.db...')
+            games_list.insert(END, row)
+            bake_pie()
+            plt.show()
 
 def add_game():
     if game_name.get() == '':
@@ -51,6 +64,8 @@ def remove_game():
         db.remove(game_choice[0])
         populate_list()
 
+
+
 #def clear_games():
 #    messagebox.askquestion('Clear All Games', 'Are you sure you want to remove all games from the list?', icon='warning')
 #    if messagebox == 'yes':
@@ -58,6 +73,7 @@ def remove_game():
 
 # create window object
 app = Tk()
+
 # Add games to list
 game_name = StringVar()
 games_label = Label(app, text='Enter Game Name', font=('bold', 14), pady=10, padx=5)
@@ -81,8 +97,7 @@ add_button = Button(app, text='Add Game', width=12, command=add_game)
 add_button.grid(row=0, column=3, padx=10)
 remove_button = Button(app, text='Remove Game', width=12, command=remove_game)
 remove_button.grid(row=4, column=0, padx=10, pady=10)
-#clear_button = Button(app, text='Clear List', width=12, command=clear_games)
-#clear_button.grid(row=4, column=1, padx=10, pady=10)
+# Adding wheel
 
 app.title('Roguelike Roulette Spinwheel')
 #Adjust the size of the window when the app opens
@@ -90,16 +105,6 @@ app.geometry('600x200')
 
 # Populate list of games
 populate_list()
-
-
-
-# creating the graph
-#pieg = plot.figure(figsize =(10, 7))
-#plot.pieg(value, labels = games)
-
-#plot.show()
-
-
 
 ## TODOS:
 # Take the list of games and make them into a pie chart with equal values, so it looks similar to a wheel of choices
