@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+aiohttp = "==3.7.4.post0"
+async-timeout = "==3.0.1"
+attrs = "==21.4.0"
+chardet = "==4.0.0"
+click = "==8.0.4"
+"discord.py" = "==1.7.3"
+Flask = "==2.0.3"
+idna = "==3.3"
+itsdangerous = "==2.1.0"
+Jinja2 = "==3.0.3"
+MarkupSafe = "==2.1.0"
+multidict = "==6.0.2"
+python-dotenv = "==0.19.2"
+typing-extensions = "==4.1.1"
+Werkzeug = "==2.0.3"
+yarl = "==1.7.2"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
