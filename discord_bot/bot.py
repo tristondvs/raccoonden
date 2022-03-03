@@ -41,7 +41,15 @@ async def on_message(message):
     # process all the bot commands sent here, since the on_message event gets processed with every single message
     await bot.process_commands(message)
 
+# clears chat messages, removing the last sent message by default, up to x messages
 @bot.command()
+async def clear(ctx, amount = 2):
+    if amount >= 2:
+        await ctx.channel.purge(limit=amount+1)
+    else:
+        await ctx.channel.purge(limit=amount)
+
+@bot.command(name='join', help='This command will pull TrashPandaBot into your voice chat channel.')
 async def join(ctx):
     # If a user is within a voice channel:
     if (ctx.author.voice):
