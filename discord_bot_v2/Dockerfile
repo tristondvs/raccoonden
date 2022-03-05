@@ -1,9 +1,12 @@
-FROM python:3.8.10 
+FROM ubuntu 
 LABEL version="2.0" \
       usage="discord bot"
-      notable_update="utilizing nextcord instead of discord.py"
 WORKDIR /app
 COPY requirements.txt requirements.txt
+RUN apt update && apt install -y tzdata
+ENV TZ=America/Chicago
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN apt install -y python3 pip ffmpeg
 RUN pip install -r requirements.txt
 COPY . .
 CMD python bot.py
