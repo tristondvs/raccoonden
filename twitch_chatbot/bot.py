@@ -1,23 +1,10 @@
 import os
 import random
 import asyncio
-import mysql.connector
 from twitchio.ext import commands
 
 #connect to mysql database
-db = mysql.connector.connect(
-    host - "localhost",
-    user = "root",
-    passwd = ""
-)
 
-print(db)
-cursor = db.cursor()
-twitch_user = ctx.author.name
-query_play = "UPDATE twitch_info.rps_scores (twitch_user, games_played) VALUES (%s, %s) ON DUPLICATE KEY UPDATE twitch_user = 'str(twitch_user)'"
-query_win = "INSERT INTO rps_scores (twitch_user, games_won) VALUES (%s, %s)"
-query_lose = "INSERT INTO rps_scores (twitch_user, games_lost) VALUES (%s, %s)"
-query_tie = "INSERT INTO rps_scores (twitch_user, games_tied) VALUES (%s, %s)"
 # set up the bot
 bot = commands.Bot(
     token=os.environ['TMI_TOKEN'],
