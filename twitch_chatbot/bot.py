@@ -4,7 +4,7 @@ import asyncio
 from twitchio.ext import commands
 
 #connect to mysql database
-
+# testing build
 # set up the bot
 bot = commands.Bot(
     token=os.environ['TMI_TOKEN'],
