@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE_NAME = "trashpanda"
+    }
+    stages {
+        stage('Build Docker Image') {
+            when {
+                branch 'master'
+            }
+            steps {
+                script {
+                    app = docker.build(DOCKER_IMAGE_NAME)
+                    app.inside {
+                        sh '/app/python bot.py'
+                    }
+                }
+            }
+        }
+            }
+        }
+        stage('StartContainer') {
+            when {
+                branch 'master'
+            }
+            steps {
+              sudo docker run -d --restart always DOCKER_IMAGE_NAME
+            }
+        }
+    }
+}
