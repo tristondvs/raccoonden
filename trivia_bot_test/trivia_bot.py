@@ -2,23 +2,24 @@ import urllib.parse
 import json, requests, random, time
 
 # defining game options, like the number of questions and what type of questions they will be
-num_of_ques = 1 
-category = 15
+
+num_of_ques=1
+category=15
 base_url = f'https://opentdb.com/api.php?amount={num_of_ques}&category={category}'
 url = requests.get(base_url)
-# data below contains entire json formatted trivia game
 data = url.json()
-question_info_list = data['results']
+# data below contains entire json formatted trivia question
 
 # define number of players in function
 
-
-
 # start game using data and player count
-def game_play(data, players=1, points=0):
-    for question_info in question_info_list:
+def game_play(data, players=1, points=0, total_rounds=5):
+    current_round = 1 
+    while current_round <= total_rounds:
+        url = requests.get(base_url)
+        data = url.json()
+        question_info_list = data['results']
         question_info = question_info_list[0]
-        question_num = 1 
         question_d = question_info['difficulty']
         question_t = question_info['type']
         question = question_info['question']
@@ -27,17 +28,21 @@ def game_play(data, players=1, points=0):
         correct_ans = (question_info['correct_answer'])
         answers.append(correct_ans)
         answer_choices = random.sample(answers, k=len(answers))
-    print(f'Question number {question_num} is a {question_d} {question_t} choice question:')
-    # small wait to give people time to read the question info above
-    time.sleep(5)
-    print(str(ques))
-    # another small wait here, quicker if the question is True or False
-    if len(answer_choices) == 2:
-        time.sleep(3)
-        print(answer_choices)
-    else:
+        print(f'Question number {current_round} is a {question_d} {question_t} choice question:')
+        # small wait to give people time to read the question info above
         time.sleep(5)
-        print(answer_choices)
+        print(str(ques))
+        # another small wait here, quicker if the question is True or False
+        if len(answer_choices) == 2:
+            time.sleep(3)
+            print(answer_choices)
+        else:
+            time.sleep(5)
+            print(answer_choices)
+            time.sleep(5)
+        current_round += 1
+        continue
+    
 
         #evaluate answer and award points
 
