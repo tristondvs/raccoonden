@@ -1,0 +1,60 @@
+---
+ - name: installs new kernel version and checks it after rebooting
+   tags: install
+   block:
+#   - name: update all packages
+#     yum:
+#       name: "*"
+#       state: latest 
+   - name: install yum fastestmirror plugin
+     yum:
+       name: yum-plugin-fastestmirror
+       state: present
+   - name: add elrepo gpg key to system
+     command: '{{ item }}'
+     with_items:
+     - "rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org"
+     - "rpm -Uvh https://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm"
+     ignore_errors: true
+   - name: install elrepo kernel version
+     command: "yum --enablerepo=elrepo-kernel install -y kernel-ml"
+   - name: set default kernel to latest
+     command: "grub2-set-default 0"
+   - name: generate grub2 config
+     command: "sudo grub2-mkconfig -o /boot/grub2/grub.cfg"
+   - name: reboot the server to reload kernel
+     shell: reboot
+     async: 1
+     poll: 0
+   - name: wait for reconnect and check
+     wait_for_connection:
+       connect_timeout: 40
+       sleep: 20
+       delay: 20
+       timeout: 240
+   - name: check OS version
+     shell: "cat /etc/redhat-release"
+     register: rhel_version
+   - name: output kernel version and hostname
+     shell: "uname -snr"
+     register: kernel_info
+   - debug:
+       msg:
+         - '{{ kernel_info.stdout }}'
+         - '{{ rhel_version.stdout }}'
+
+
+ - name: check OS and kernel info only
+   tags: check
+   block:
+   - name: check OS version
+     shell: "cat /etc/redhat-release"
+     register: rhel_version
+   - name: output kernel version and hostname
+     shell: "uname -snr"
+     register: kernel_info
+   - debug:
+       msg: 
+         - '{{ kernel_info.stdout }}'
+         - '{{ rhel_version.stdout }}'
+...
