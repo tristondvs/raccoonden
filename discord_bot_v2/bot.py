@@ -33,7 +33,7 @@ ffmpeg_options = {"options": "-vn"}
 ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 
-#class YTDLSource(nextcord.PCMVolumeTransformer):
+# class YTDLSource(nextcord.PCMVolumeTransformer):
 #    def __init__(self, source, *, data, volume=0.5):
 #        super().__init__(source, volume)
 #
@@ -56,7 +56,7 @@ ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 #        return cls(nextcord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 #
 #
-#class Music(commands.Cog):
+# class Music(commands.Cog):
 #    def __init__(self, bot):
 #        self.bot = bot
 #
@@ -121,8 +121,8 @@ async def on_ready():
     # bot.loop.create_task(node_connect())
 
 
-#@bot.event
-#async def on_member_join(member):
+# @bot.event
+# async def on_member_join(member):
 #    await member.create_dm()
 #    await member.dm_channel.send(f"Hello there {member.name}, welcome to Tha Dumpsta!")
 
