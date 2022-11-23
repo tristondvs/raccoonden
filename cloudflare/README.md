@@ -3,7 +3,7 @@ Python 3.10.6
 pip install -r requirements.txt
 ```
 
-`create .env file containing the following vars`
+create .env file containing the following vars within this directory
 
 ```
 USER_EMAIL='<email for cloudflare login>'
