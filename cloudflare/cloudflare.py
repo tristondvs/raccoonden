@@ -55,14 +55,36 @@ def user_choose_pool(pool_status):
     global pool_choice
     pool_choice = input('Choose available pool index value above: ')
     if int(pool_choice) in range(len(pool_status)):
-      # debug  
-      #print('Pool id chosen was ' + pool_status[int(pool_choice)]["pool_id"] + ': ' + pool_status[int(pool_choice)]["pool_name"])
+      global pool_chosen
+      pool_chosen = int(pool_choice)
       break
     else:
       print('Pool selection not available')
 
-#def change_pool_status(pool_status, pool_choice):
-  
+def change_pool_status(pool_status, pool_chosen):
+  c = pool_chosen
+  e = pool_status[c]["enabled"]
+  p = pool_status[c]["pool_name"]
+  if e == "True":
+    confirm = input('Pool ' + p + ' will be disabled, continue? (y/n): ')
+    while True:
+      if confirm == "y":
+        data = '{"enabled": false}'
+        pool_state = requests.patch('https://api.cloudflare.com/client/v4/accounts/' + zone + '/load_balancers/pools/' + pool_id[c], headers=headers, data=data)
+        break
+      elif confirm == "n":
+        print('Exiting process, changes have not been made.')
+        exit()
+  elif e == "False":
+    confirm = input('Pool ' + p + ' will be enabled, continue? (y/n): ')
+    while True:
+      if confirm == "y":
+        data = '{"enabled": true}'
+        pool_state = requests.patch('https://api.cloudflare.com/client/v4/accounts/' + zone + '/load_balancers/pools/' + pool_id[c], headers=headers, data=data)
+        break
+      elif confirm == "n":
+        print('Exiting process, changes have not been made.')
+        exit()
 
 
 ### check status of pools after changes to verify
@@ -70,4 +92,5 @@ def user_choose_pool(pool_status):
 fetch_pools()
 fetch_pool_status(pool_id)
 user_choose_pool(pool_status)
-#change_pool_status(pool_status, pool_choice)
+change_pool_status(pool_status, pool_chosen)
+fetch_pool_status(pool_id)
